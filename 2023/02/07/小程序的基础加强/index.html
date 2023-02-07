@@ -1,0 +1,804 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>微信小程序的基础加强 | erha blog</title><meta name="author" content="erha"><meta name="copyright" content="erha"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="自定义组件组件的创建与引用创建组件  在项目的根目录中，鼠标右键，创建 components -&gt; test 文件夹  在新建的 components -&gt; test 文件夹上，鼠标右键，点击 “新建Component“  键入组件的名称之后回车，会自动生成组件对应的4个文件，后缀名分别为.js， .json，.wxml和.wxss   引用组件 组件的引用方式分为 “局部引用” 和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序的基础加强">
+<meta property="og:url" content="http://example.com/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA/index.html">
+<meta property="og:site_name" content="erha blog">
+<meta property="og:description" content="自定义组件组件的创建与引用创建组件  在项目的根目录中，鼠标右键，创建 components -&gt; test 文件夹  在新建的 components -&gt; test 文件夹上，鼠标右键，点击 “新建Component“  键入组件的名称之后回车，会自动生成组件对应的4个文件，后缀名分别为.js， .json，.wxml和.wxss   引用组件 组件的引用方式分为 “局部引用” 和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg">
+<meta property="article:published_time" content="2023-02-07T06:19:54.682Z">
+<meta property="article:modified_time" content="2023-02-07T06:20:29.859Z">
+<meta property="article:author" content="erha">
+<meta property="article:tag" content="微信小程序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '微信小程序的基础加强',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2023-02-07 14:20:29'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://pic.imgdb.cn/item/63e0f1d14757feff33865eb7.gif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音樂</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 電影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="erha blog"><span class="site-name">erha blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音樂</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 電影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">微信小程序的基础加强</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-07T06:19:54.682Z" title="发表于 2023-02-07 14:19:54">2023-02-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-07T06:20:29.859Z" title="更新于 2023-02-07 14:20:29">2023-02-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="微信小程序的基础加强"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="自定义组件"><a href="#自定义组件" class="headerlink" title="自定义组件"></a>自定义组件</h3><h4 id="组件的创建与引用"><a href="#组件的创建与引用" class="headerlink" title="组件的创建与引用"></a>组件的创建与引用</h4><p><strong>创建组件</strong></p>
+<ol>
+<li><p>在项目的根目录中，鼠标右键，创建 <strong>components</strong> -&gt; <strong>test</strong> 文件夹</p>
+</li>
+<li><p>在新建的 components -&gt; test 文件夹上，鼠标右键，点击 “<strong>新建Component</strong>“</p>
+</li>
+<li><p>键入组件的名称之后回车，会自动生成组件对应的4个文件，后缀名分别为.js， .json，.wxml和.wxss</p>
+</li>
+</ol>
+<p><strong>引用组件</strong></p>
+<p>组件的引用方式分为 “<strong>局部引用</strong>” 和 “<strong>全局引用</strong>” ，顾名思义:</p>
+<ul>
+<li>局部引用：组件只能在当前被引用的页面内使用</li>
+<li>全局引用：组件可以在每个小程序页面中使用</li>
+</ul>
+<p>根据组件的使用频率和范围,来选择合适的引用方式:</p>
+<ul>
+<li>如果某组件在多个页面中经常被用到，建议进行“全局引用”</li>
+<li>如果某组件只在特定的页面中被用到，建议进行”局部引用’</li>
+</ul>
+<p><strong>局部引用组件</strong></p>
+<p>在页面的 .json 配置文件中引用组件的方式，叫做 “局部引用”。示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// home.json</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;usingComponents&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my-test1&quot;</span>:<span class="string">&quot;/components/test1/tes1t&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- home.wxml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-test1</span>&gt;</span><span class="tag">&lt;/<span class="name">my-test1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>全局引用组件</strong></p>
+<p>在 app.json 全局配置文件中引用组件的方式，叫做 “全局引用”。示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;pages&quot;</span>:[<span class="comment">/*....*/</span>],</span><br><span class="line">  <span class="string">&quot;window&quot;</span>:&#123;<span class="comment">/*....*/</span>&#125;,</span><br><span class="line">  <span class="string">&quot;usingComponents&quot;</span>: &#123;</span><br><span class="line">  	<span class="string">&quot;my-test2&quot;</span>:<span class="string">&quot;/components/test2/test2&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">   <span class="comment">//....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 页面.wxml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-test2</span>&gt;</span><span class="tag">&lt;/<span class="name">my-test2</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="组件和页面的区别"><a href="#组件和页面的区别" class="headerlink" title="组件和页面的区别"></a>组件和页面的区别</h4><p>从表面来看，组件和页面都是由 .js、.json、.wxml 和 .wxss 这四个文件组成的。但是，组件和页面的 .js 与 .json 文件有明显的不同:</p>
+<ul>
+<li>组件的 .json 文件中需要声明 <strong>“component”: true</strong> 属性</li>
+<li>组件的 .js 文件中调用的是 <strong>Component()</strong> 函数</li>
+<li>组件的事件处理函数需要定义到 <strong>methods</strong> 节点中</li>
+</ul>
+<h4 id="组件样式隔离"><a href="#组件样式隔离" class="headerlink" title="组件样式隔离"></a>组件样式隔离</h4><p>默认情况下，自定义组件的样式只对当前组件生效，不会影响到组件之外的 UI 结构</p>
+<ul>
+<li>组件 A 的样式<strong>不会影响</strong>组件 C 的样式</li>
+<li>组件 A 的样式<strong>不会影响</strong>小程序页面的样式</li>
+<li>小程序页面的样式<strong>不会影响</strong>组件 A 和 C 的样式</li>
+</ul>
+<p>好处:</p>
+<ol>
+<li>防止外界的样式影响组件内部的样式</li>
+<li>防止组件的样式破坏外界的样式</li>
+</ol>
+<p><strong>组件样式隔离的注意点</strong></p>
+<ul>
+<li>app.wxss 中的全局样式对组件无效</li>
+<li>只有 class 选择器会有样式隔离效果，id选择器、属性选择器、标签选择器不受样式隔离的影响</li>
+</ul>
+<p>建议：在<strong>组件</strong>和<strong>引用组件的页面</strong>中建议使用 class 选择器<strong>，不要使用id、属性、标签选择器</strong>!</p>
+<p><strong>修改组件的样式隔离选项</strong></p>
+<p>默认情况下，自定义组件的<strong>样式隔离特性</strong>能够<strong>防止组件内外样式互相干扰的问题</strong>。但有时，我们希望在外界能够控制组件内部的样式，此时，可以通过 <strong>stylelsolation</strong> 修改组件的样式隔离选项，用法如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在组件的 .js 文件中新增如下配置</span></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="attr">options</span>:&#123;</span><br><span class="line">        <span class="attr">styleIsolation</span>:<span class="string">&#x27;isolated&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或在组件 .json 文件中新增如下配置</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;styleIsolation&quot;</span>:<span class="string">&quot;isolated&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>styleIsolation 的可选值</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">可选值</th>
+<th align="center">默认值</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">isolated</td>
+<td align="center">是</td>
+<td align="left">表示<strong>启用样式隔离</strong>，在自定义组件内外，使用 class 指定的样式将<strong>不会相互影响</strong></td>
+</tr>
+<tr>
+<td align="center">apply-shared</td>
+<td align="center">否</td>
+<td align="left">表示<strong>页面 wxss 样式将影响到自定义组件</strong>，但自定义组件 wxss 中指定的样式不会影响页面</td>
+</tr>
+<tr>
+<td align="center"><strong>shared</strong></td>
+<td align="center">否</td>
+<td align="left">表示页面 wxss 样式将影响到自定义组件，自定义组件 wxss 中指定的样式也会影响页面和其他设置了apply-shared 或 shared 的自定义组件</td>
+</tr>
+</tbody></table>
+<h4 id="组件的数据"><a href="#组件的数据" class="headerlink" title="组件的数据"></a>组件的数据</h4><p>在小程序组件中，<strong>用于组件模板渲染</strong>的<strong>私有数据</strong>，需要定义到 <strong>data 节点</strong>中，示例如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/test/test.js</span></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 组件的初始数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">count</span>:<span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="组件的方法"><a href="#组件的方法" class="headerlink" title="组件的方法"></a>组件的方法</h4><p>在小程序组件中，<strong>事件处理函数</strong>和<strong>自定义方法</strong>需要定义到 <strong>methods 节点</strong>中，示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/test/test.js</span></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 组件的方法列表</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="attr">methods</span>: &#123; <span class="comment">// 组件的方法列表 【包含事件处理函数和自定义方法】</span></span><br><span class="line">        <span class="title function_">addCount</span>(<span class="params"></span>) &#123; <span class="comment">// 事件处理函数</span></span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123;<span class="attr">count</span>:<span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">count</span> + <span class="number">1</span>&#125;)</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">_showCount</span>() <span class="comment">// 通过 this 直接调用自定义方法</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">_showCount</span>(<span class="params"></span>) &#123; <span class="comment">// 自定义方法建议以 _ 开头</span></span><br><span class="line">            wx.<span class="title function_">showToast</span>(&#123;</span><br><span class="line">              <span class="attr">title</span>: <span class="string">&#x27;count值为：&#x27;</span> + <span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">count</span>,</span><br><span class="line">              <span class="attr">icon</span>: <span class="string">&#x27;none&#x27;</span></span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span>count的值是：&#123;&#123;count&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">bindtap</span>=<span class="string">&quot;addCount&quot;</span>&gt;</span>+1<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="组件的属性"><a href="#组件的属性" class="headerlink" title="组件的属性"></a>组件的属性</h4><p>在小程序组件中，properties 是组件的对外属性，<strong>用来接收外界传递到组件中的数据</strong>，示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/test/test.js</span></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line"></span><br><span class="line">    <span class="attr">options</span>:&#123;</span><br><span class="line">        <span class="attr">styleIsolation</span>:<span class="string">&#x27;isolated&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 组件的属性列表</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="attr">properties</span>: &#123;</span><br><span class="line">        <span class="attr">max</span>:&#123; <span class="comment">// 完整定义属性的方法 【当需要指定属性默认值时，建议使用此方法】</span></span><br><span class="line">            <span class="attr">type</span>:<span class="title class_">Number</span>, <span class="comment">// 属性值的数据类</span></span><br><span class="line">            <span class="attr">value</span>:<span class="number">10</span> <span class="comment">// 属性默认值</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">max</span>:<span class="title class_">Number</span> <span class="comment">// 简化定义属性的方式 【不需指定属性默认值时，可以使用简化方式】</span></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">methods</span>: &#123; </span><br><span class="line">        <span class="title function_">addCount</span>(<span class="params"></span>) &#123; </span><br><span class="line">            <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">count</span> &gt;= <span class="variable language_">this</span>.<span class="property">properties</span>.<span class="property">max</span>) <span class="keyword">return</span></span><br><span class="line">           <span class="comment">// ....</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">my-test1</span> <span class="attr">max</span>=<span class="string">&quot;10&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">my-test1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>data 和 properties 的区别</strong></p>
+<p>在小程序的组件中，properties 属性和 data 数据的用法相同，它们都是可读可写的，只不过:</p>
+<ul>
+<li>data 更倾向于<strong>存储组件的私有数据</strong></li>
+<li>properties 更倾向于<strong>存储外界传递到组件中的数据</strong></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">data</span> === <span class="variable language_">this</span>.<span class="property">properties</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">methods</span>:&#123;</span><br><span class="line">    <span class="title function_">addMax</span>(<span class="params"></span>)&#123; <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123; <span class="attr">max</span>:<span class="variable language_">this</span>.<span class="property">properties</span>.<span class="property">max</span> + <span class="number">1</span> &#125;) &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    max属性的值为：&#123;&#123;max&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">bindtap</span>=<span class="string">&quot;addMax&quot;</span>&gt;</span>max+1<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="数据监听器"><a href="#数据监听器" class="headerlink" title="数据监听器"></a>数据监听器</h4><p>数据监听器用于<strong>监听和响应任何属性和数据字段的变化，从而执行特定的操作</strong>。它的作用类似于 vue 中的 watch 侦听器。在小程序组件中，数据监听器的基本语法格式如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="attr">observers</span>:&#123;</span><br><span class="line">        <span class="string">&#x27;字段A,字段B&#x27;</span>: <span class="keyword">function</span>(<span class="params">字段A的新值,字段B的新值</span>) &#123;</span><br><span class="line">            <span class="comment">// do something</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据监听器的基本用法</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/test2/test2.js</span></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line"></span><br><span class="line">    <span class="attr">data</span>: &#123; <span class="attr">n1</span>:<span class="number">0</span>, <span class="attr">n2</span>:<span class="number">0</span>, <span class="attr">sum</span>:<span class="number">0</span> &#125;, <span class="comment">// 数据节点</span></span><br><span class="line"> </span><br><span class="line">    <span class="attr">methods</span>: &#123; <span class="comment">// 方法列表</span></span><br><span class="line">        <span class="title function_">addN1</span>(<span class="params"></span>)&#123; <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123; <span class="attr">n1</span>: <span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">n1</span>+<span class="number">1</span> &#125;) &#125;,</span><br><span class="line">        <span class="title function_">addN2</span>(<span class="params"></span>)&#123; <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123; <span class="attr">n2</span>: <span class="variable language_">this</span>.<span class="property">data</span>.<span class="property">n2</span>+<span class="number">1</span> &#125;) &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">observers</span>:&#123; <span class="comment">// 数据监听节点</span></span><br><span class="line">        <span class="string">&#x27;n1,n2&#x27;</span>: <span class="keyword">function</span>(<span class="params">newN1,newN2</span>) &#123; <span class="comment">// 监听 n1 和 n2 数据的变化</span></span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123; <span class="attr">sum</span>:newN1+newN2 &#125;) <span class="comment">// 通过监听器，自动计算 sum 的值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>监听对象属性的变化</strong></p>
+<p>数据监听器支持监听对象中<strong>单个</strong>或<strong>多个属性</strong>的变化，示例语法如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="attr">observers</span>:&#123;</span><br><span class="line">        <span class="string">&#x27;对象.属性A,对象.属性B&#x27;</span>: <span class="keyword">function</span>(<span class="params">属性A的新值,属性B的新值</span>) &#123;</span><br><span class="line">            <span class="comment">// 触发此监听器的 3 种情况</span></span><br><span class="line">            <span class="comment">// 【为属性A赋值】 使用 setData 设置 this.data.对象.属性A 时触发</span></span><br><span class="line">            <span class="comment">// 【为属性B赋值】 使用 setData 设置 this.data.对象.属性B 时触发</span></span><br><span class="line">            <span class="comment">// 【直接为对象赋值】 使用 setData 设置 this.data.对象 时触发</span></span><br><span class="line">            <span class="comment">// do something</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据监听器-案例"><a href="#数据监听器-案例" class="headerlink" title="数据监听器-案例"></a><a href="./%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC%E5%99%A8-%E6%A1%88%E4%BE%8B.md">数据监听器-案例</a></h4><p><strong>监听对象中所有属性的变化</strong></p>
+<p>如果某个对象中需要被监听的属性太多，为了方便，可以使用<strong>通配符 **</strong> 来<strong>监听</strong>对象中<strong>所有属性的变化</strong>，示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">observers</span>:&#123;</span><br><span class="line">    <span class="comment">// 使用通配符 ** 监听对象上所有属性的变化</span></span><br><span class="line">    <span class="string">&#x27;rgb.**&#x27;</span>: <span class="keyword">function</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123;</span><br><span class="line">            <span class="attr">fullColor</span>:<span class="string">`<span class="subst">$&#123;obj.r&#125;</span>,<span class="subst">$&#123;obj.g&#125;</span>,<span class="subst">$&#123;obj.b&#125;</span>`</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="纯数据字段"><a href="#纯数据字段" class="headerlink" title="纯数据字段"></a>纯数据字段</h4><p>概念：<strong>纯数据字段</strong>指的是那些<strong>不用于界面渲染的 data 字段</strong>。</p>
+<p>应用场景：例如有些情况下，某些data中的字段<strong>既不会展示在界面上</strong>，<strong>也不会传递给其他组件</strong>，仅仅在当前组件内部使用。带有这种特性的data字段适合被设置为纯数据字段。</p>
+<p>好处：纯数据字段<strong>有助于提升页面更新的性能</strong>。</p>
+<p><strong>使用规则</strong></p>
+<p>在 Component 构造器的 options 节点中，指定 <strong>pureDataPattern</strong> 为一个<strong>正则表达式</strong>，字段名符合这个正则表达式的字段将成为纯数据字段，示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line"></span><br><span class="line">    <span class="attr">option</span>: &#123;</span><br><span class="line">        <span class="comment">// 指定所有 _ 开头的数据字段为纯数据字段</span></span><br><span class="line">        <span class="attr">pureDataPattern</span>: <span class="regexp">/^-/</span> </span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 组件的初始数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">a</span>: <span class="literal">true</span>, <span class="comment">// 普通数据字段</span></span><br><span class="line">        <span class="attr">_b</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">)&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="组件的生命周期"><a href="#组件的生命周期" class="headerlink" title="组件的生命周期"></a>组件的生命周期</h4><p><strong>组件全部的生命周期函数</strong></p>
+<p>小程序组件可用的全部生命周期如下表所示:</p>
+<table>
+<thead>
+<tr>
+<th align="center">生命周期函数</th>
+<th align="center">参数</th>
+<th align="center">描述说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>created</strong></td>
+<td align="center"><strong>无</strong></td>
+<td align="center"><strong>在组件实例刚刚被创建时执行</strong></td>
+</tr>
+<tr>
+<td align="center"><strong>attached</strong></td>
+<td align="center"><strong>无</strong></td>
+<td align="center"><strong>在组件实例进入页面节点树时执行</strong></td>
+</tr>
+<tr>
+<td align="center">ready</td>
+<td align="center">无</td>
+<td align="center">在组件在视图层布局完成后执行</td>
+</tr>
+<tr>
+<td align="center">moved</td>
+<td align="center">无</td>
+<td align="center">在组件实例被移动到节点树另一个位置时执行</td>
+</tr>
+<tr>
+<td align="center"><strong>detached</strong></td>
+<td align="center"><strong>无</strong></td>
+<td align="center"><strong>在组件实例被从页面节点树移除时执行</strong></td>
+</tr>
+<tr>
+<td align="center">error</td>
+<td align="center">Object Error</td>
+<td align="center">每当组件方法抛出错误时执行</td>
+</tr>
+</tbody></table>
+<p><strong>组件主要的生命周期函数</strong></p>
+<p>在小程序组件中，最重要的生命周期函数有3个，分别是 <strong>created</strong>、<strong>attached</strong>、<strong>detached</strong>。它们各自的特点如下:</p>
+<ol>
+<li>组件实例<strong>刚被创建好</strong>的时候，created 生命周期函数会被触发<ul>
+<li>此时还不能调用 setData</li>
+<li>通常在这个生命周期函数中，只应该用于给组件的 this 添加一些自定义的属性字段</li>
+</ul>
+</li>
+<li>在组件<strong>完全初始化完毕、进入页面节点树后</strong>，attached 生命周期函数会被触发<ul>
+<li>此时, this.data 已被初始化完毕</li>
+<li>这个生命周期很有用，绝大多数初始化的工作可以在这个时机进行（例如发请求获取初始数据)</li>
+</ul>
+</li>
+<li>在组件<strong>离开页面节点树后</strong>，detached 生命周期函数会被触发<ul>
+<li>退出一个页面时，会触发页面内每个自定义组件的 detached 生命周期函数</li>
+<li>此时适合做一些清理性质的工作</li>
+</ul>
+</li>
+</ol>
+<p><strong>lifetimes 节点</strong></p>
+<p>在小程序组件中，生命周期函数可以直接定义在 Component 构造器的第一级参数中，可以在 <strong>lifetimes</strong> 字段内进行声明（<strong>这是推荐的方式，其优先级最高</strong>)。示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="comment">// 推荐用法</span></span><br><span class="line">	<span class="attr">lifetimes</span>:&#123;</span><br><span class="line">        <span class="title function_">created</span>(<span class="params"></span>) &#123;&#125;, <span class="comment">// 在组件实例刚刚被创建时执行</span></span><br><span class="line">        <span class="title function_">attached</span>(<span class="params"></span>) &#123;&#125;, <span class="comment">// 在组件实例进入页面节点树时执行</span></span><br><span class="line">        <span class="title function_">detached</span>(<span class="params"></span>) &#123;&#125; <span class="comment">// 在组件实例被从页面节点树移除时执行</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 以下是旧式的定义方式</span></span><br><span class="line">    <span class="title function_">created</span>(<span class="params"></span>) &#123;&#125;, <span class="comment">// 在组件实例刚刚被创建时执行</span></span><br><span class="line">    <span class="title function_">attached</span>(<span class="params"></span>) &#123;&#125;, <span class="comment">// 在组件实例进入页面节点树时执行</span></span><br><span class="line">    <span class="title function_">detached</span>(<span class="params"></span>) &#123;&#125; <span class="comment">// 在组件实例被从页面节点树移除时执行</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>组件所在页面的生命周期</strong></p>
+<p>有时，<strong>自定义组件的行为依赖于页面状态的变化</strong>，此时就需要用到<strong>组件所在页面的生命周期</strong>。</p>
+<p>例如：每当触发页面的 show 生命周期函数的时候，我们希望能够重新生成一个随机的 RGB 颜色值。在自定义组件中，组件所在页面的生命周期函数有如下 3 个，分别是:</p>
+<table>
+<thead>
+<tr>
+<th align="center">生命周期函数</th>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">show</td>
+<td align="center">无</td>
+<td align="center"><strong>组件所在的页面</strong>被展示时执行</td>
+</tr>
+<tr>
+<td align="center">hide</td>
+<td align="center">无</td>
+<td align="center"><strong>组件所在的页面</strong>被隐藏时执行</td>
+</tr>
+<tr>
+<td align="center">resize</td>
+<td align="center">Object Size</td>
+<td align="center"><strong>组件所在的页面</strong>尺寸变化时执行</td>
+</tr>
+</tbody></table>
+<p><strong>pageLifetimes 节点</strong></p>
+<p>组件所在页面的生命周期函数，需要定义在 pageLifetimes 节点中，示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="attr">pageLifetimes</span>:&#123;</span><br><span class="line">        <span class="attr">show</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;&#125;, <span class="comment">// 页面被展示</span></span><br><span class="line">    	<span class="attr">hide</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;&#125;, <span class="comment">// 页面被隐藏</span></span><br><span class="line">     	<span class="attr">resize</span>: <span class="keyword">function</span>(<span class="params">size</span>) &#123; &#125; <span class="comment">// 页面尺寸变化</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="组件的插槽"><a href="#组件的插槽" class="headerlink" title="组件的插槽"></a>组件的插槽</h4><p>在自定义组件的 wxml 结构中，可以提供一个 <strong><code>&lt;slot&gt;</code></strong> 节点（插槽），<strong>用于承载组件使用者提供的 wxml 结构</strong>。</p>
+<p><strong>单个插槽</strong></p>
+<p>在小程序中，默认每个自定义组件中只允许使用一个 <code>&lt;slot&gt;</code> 进行占位，这种个数上的限制叫做单个插槽。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--components/test4/test4.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">        这里是组件的内部结构</span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">slot</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--pages/home/home.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-test4</span>&gt;</span></span><br><span class="line">这里是插入到组件slot中的内容</span><br><span class="line"><span class="tag">&lt;/<span class="name">my-test4</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>启用多个插槽</strong></p>
+<p>在小程序的自定义组件中，需要使用多 <strong><code>&lt;slot&gt;</code></strong> 插槽时，可以在组件的 .js 文件中，通过如下方式进行启用。示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/test4/test4.js</span></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="attr">options</span>:&#123;</span><br><span class="line">        <span class="attr">multipleSlots</span>:<span class="literal">true</span> <span class="comment">// 启用多 slot 文件</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>定义多个插槽</strong></p>
+<p>可以在组件的 .wxml 中使用多个 <strong><code>&lt;slot&gt;</code></strong> 标签，以不同的 <strong>name</strong> 来区分不同的插槽。示例代码如下:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--components/test4/test4.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;component-item&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;before&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">        这里是组件的内部结构</span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;after&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--pages/home/home.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-test4</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">slot</span>=<span class="string">&quot;before&quot;</span>&gt;</span></span><br><span class="line">    这里是插入到组件befor插槽中的内容</span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">slot</span>=<span class="string">&quot;after&quot;</span>&gt;</span></span><br><span class="line">    这里是插入到组件after插槽中的内容</span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">my-test4</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="父子组件之间的通信"><a href="#父子组件之间的通信" class="headerlink" title="父子组件之间的通信"></a>父子组件之间的通信</h4><p>父子组件之间通信的3种方式</p>
+<ol>
+<li>属性绑定<ul>
+<li>用于父组件向子组件的指定属性设置数据，仅能设置JSON兼容的数据</li>
+</ul>
+</li>
+<li>事件绑定<ul>
+<li>用于子组件向父组件传递数据，可以传递任意数据</li>
+</ul>
+</li>
+<li>获取组件实例<ul>
+<li>父组件还可以通过 this.selectComponent() 获取子组件实例对象</li>
+<li>这样就可以直接访问子组件的任意数据和方法</li>
+</ul>
+</li>
+</ol>
+<p><strong>属性绑定</strong></p>
+<p><strong>属性绑定</strong>用于实现<strong>父向子传值</strong>，而且<strong>只能传递普通类型的数据</strong>，无法将方法传递给子组件。父组件的示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pages/home/home.js</span></span><br><span class="line"><span class="title class_">Page</span>(&#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="attr">count</span>:<span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--pages/home/home.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    父组件中，count值是</span><br><span class="line">    &#123;&#123;count&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>子组件在 <strong>properties</strong> 节点中<strong>声明对应的属性并使用</strong>。示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 组件的属性列表</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="attr">properties</span>: &#123;</span><br><span class="line">        <span class="attr">count</span>:<span class="title class_">Number</span></span><br><span class="line">    &#125;,</span><br><span class="line">)&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--components/test5/test5.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    子组件中，count值是 &#123;&#123;count&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>事件绑定</strong></p>
+<p><strong>事件绑定</strong>用于实现<strong>子向父传值</strong>，可以传递任何类型的数据。使用步骤如下:</p>
+<ol>
+<li>在<strong>父组件</strong>的 js 中，定义一个函数，这个函数<strong>即将</strong>通过自定义事件的形式，传递给子组件</li>
+<li>在<strong>父组件</strong>的 wxml 中，通过<strong>自定义事件</strong>的形式，将步骤1中定义的函数引用，传递给子组件</li>
+<li>在<strong>子组件</strong>的 js 中，通过调用 <strong>this.triggerEvent(</strong>‘<code>自定义事件名称</code>‘,{ /* <code>参数对象</code> */}**)**，将数据发送到父组件</li>
+<li>在<strong>父组件</strong>的 js 中，通过 <strong>e.detail</strong> 获取到子组件传递过来的数据</li>
+</ol>
+<p>步骤1：在<strong>父组件</strong>的 js 中，定义一个函数，这个函数<strong>即将</strong>通过自定义事件的形式，传递给子组件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在父组件中定义 syncCount 方法</span></span><br><span class="line"><span class="comment">// 将来，这个方法会被传递给子组件，供子组件进行调用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// pages/home/home.js</span></span><br><span class="line"><span class="title class_">Page</span>(&#123;</span><br><span class="line">    <span class="attr">data</span>:&#123;</span><br><span class="line">        <span class="attr">count</span>:<span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">syncCount</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;syncCount&#x27;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>步骤2：在<strong>父组件</strong>的 wxml 中，通过<strong>自定义事件</strong>的形式，将步骤1中定义的函数引用，传递给子组件</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 使用bind:自定义事件名称（推荐：结构清晰） --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-test5</span> <span class="attr">count</span>=<span class="string">&quot;&#123;&#123;count&#125;&#125;&quot;</span> <span class="attr">bind:sync</span>=<span class="string">&quot;syncCount&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">my-test5</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 或在 bind 后面直接写上自定义事件名称 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-test5</span> <span class="attr">count</span>=<span class="string">&quot;&#123;&#123;count&#125;&#125;&quot;</span> <span class="attr">bindsync</span>=<span class="string">&quot;syncCount&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">my-test5</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>步骤3：在<strong>子组件</strong>的 js 中，通过调用 <strong>this.triggerEvent(</strong>‘<code>自定义事件名称</code>‘,{ /* <code>参数对象</code> */}**)**，将数据发送到父组件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/test5/test5.js</span></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line"></span><br><span class="line">    <span class="attr">properties</span>: &#123;</span><br><span class="line">        <span class="attr">count</span>:<span class="title class_">Number</span></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">methods</span>: &#123;</span><br><span class="line">        <span class="title function_">addCount</span>(<span class="params"></span>)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123;</span><br><span class="line">                <span class="attr">count</span>:<span class="variable language_">this</span>.<span class="property">properties</span>.<span class="property">count</span>+<span class="number">1</span></span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">triggerEvent</span>(<span class="string">&#x27;sync&#x27;</span>,&#123;<span class="attr">value</span>:<span class="variable language_">this</span>.<span class="property">properties</span>.<span class="property">count</span>&#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>步骤4：在<strong>父组件</strong>的 js 中，通过 <strong>e.detail</strong> 获取到子组件传递过来的数据</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pages/home/home.js</span></span><br><span class="line"><span class="title class_">Page</span>(&#123;</span><br><span class="line">    <span class="attr">data</span>:&#123;</span><br><span class="line">        <span class="attr">count</span>:<span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">syncCount</span>(<span class="params">e</span>) &#123;</span><br><span class="line">        <span class="comment">// console.log(e.detail.value);</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123;</span><br><span class="line">            <span class="attr">count</span>:e.<span class="property">detail</span>.<span class="property">value</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>获取组件实例</strong></p>
+<p>可在父组件里调用 <strong>this.selectComponent(</strong>“id或class选择器”<strong>)**，获取子组件的实例对象，从而直接访问子组件的任意数据和方法。调用时需要传入一个</strong>选择器**，例如 this.selectComponent(“.my-component”)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pages/home/home.js</span></span><br><span class="line"><span class="title class_">Page</span>(&#123;</span><br><span class="line">    <span class="title function_">getChild</span>(<span class="params"></span>) &#123; <span class="comment">// 按钮的事件处理函数</span></span><br><span class="line">       <span class="keyword">const</span> child = <span class="variable language_">this</span>.<span class="title function_">selectComponent</span>(<span class="string">&#x27;.my-child&#x27;</span>) <span class="comment">// 获取子组件实例</span></span><br><span class="line">       child.<span class="title function_">setData</span>(&#123;<span class="attr">count</span>:child.<span class="property">properties</span>.<span class="property">count</span>+<span class="number">1</span>&#125;) <span class="comment">// 调用子组件的 setData 方法</span></span><br><span class="line">       child.<span class="title function_">addCount</span>() <span class="comment">// 调用子组件的 addCount 方法</span></span><br><span class="line">    &#125;,</span><br><span class="line">)&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--pages/home/home.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-test5</span> <span class="attr">count</span>=<span class="string">&quot;&#123;&#123;count&#125;&#125;&quot;</span> <span class="attr">bind:sync</span>=<span class="string">&quot;syncCount&quot;</span> <span class="attr">class</span>=<span class="string">&quot;my-child&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">my-test5</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">bindtap</span>=<span class="string">&quot;getChild&quot;</span>&gt;</span>获取子组件实例<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="behaviors"><a href="#behaviors" class="headerlink" title="behaviors"></a>behaviors</h4><p>behaviors 是小程序中，<strong>用于实现组件间代码共享</strong>的特性，类似于 Vue.js 中的 “mixins”。</p>
+<p><strong>behaviors的工作方式</strong></p>
+<p>每个behavior可以包含一组<strong>属性</strong>、<strong>数据</strong>、<strong>生命周期函数</strong>和<strong>方法</strong>。组件引用它时，它的属性、数据和方法<strong>会被合并到组件中</strong>。</p>
+<p>每个组件可以引用多个 behavior，behavior 也可以引用其它 behavior。</p>
+<p><strong>创建 behavior</strong></p>
+<p>调用 Behavior(Object object) 方法即可创建一个<strong>共享的 behavior 实例对象</strong>，供所有的组件使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// behavior/my-behavior.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用 Behavuir() 方法，创建实例对象</span></span><br><span class="line"><span class="comment">// 并使用 module.exports 将 behavior 实例对象共享出去</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="title class_">Behavior</span>(&#123;</span><br><span class="line">    <span class="comment">// 属性节点</span></span><br><span class="line">    <span class="attr">properties</span>:&#123;&#125;,</span><br><span class="line">    <span class="comment">// 私有数据节点</span></span><br><span class="line">    <span class="attr">data</span>: &#123; <span class="attr">username</span>: <span class="string">&#x27;zs&#x27;</span> &#125;,</span><br><span class="line">    <span class="comment">// 事件处理函数和自定义方法节点</span></span><br><span class="line">    <span class="attr">methods</span>: &#123;&#125;</span><br><span class="line">    <span class="comment">// 其他节点...</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>导入并使用 behavior</strong></p>
+<p>在组件中，使用 <strong>require()</strong> 方法导入需要的 behavior，<strong>挂载后即可访问 behavior 中的数据或方法</strong>，示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/test5/test5.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 require() 导入需要的自定义 behavior 模块</span></span><br><span class="line"><span class="keyword">const</span> myBehavior = <span class="built_in">require</span>(<span class="string">&quot;../../behaviors/my-behavior&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="comment">// 将导入的 behavior 实例对象，挂载到 behaviors 数组节点中，即可生效</span></span><br><span class="line">    <span class="attr">behaviors</span>: [myBehavior],</span><br><span class="line">    <span class="comment">// 组件的其他节点...</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--components/test5/test5.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">        在behaviors中定义的用户名是：&#123;&#123;username&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>behavior 中所有可用的节点</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">可用的节点</th>
+<th align="center">类型</th>
+<th align="center">是否必填</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>properties</strong></td>
+<td align="center">object Map</td>
+<td align="center">否</td>
+<td align="center">同组件的属性</td>
+</tr>
+<tr>
+<td align="center"><strong>data</strong></td>
+<td align="center">object</td>
+<td align="center">否</td>
+<td align="center">同组件的数据</td>
+</tr>
+<tr>
+<td align="center"><strong>methods</strong></td>
+<td align="center">object</td>
+<td align="center">否</td>
+<td align="center">同自定义组件的方法</td>
+</tr>
+<tr>
+<td align="center"><strong>behaviors</strong></td>
+<td align="center">string Array</td>
+<td align="center">否</td>
+<td align="center">引入其它的behavior</td>
+</tr>
+<tr>
+<td align="center">created</td>
+<td align="center">Function</td>
+<td align="center">否</td>
+<td align="center">生命周期函数</td>
+</tr>
+<tr>
+<td align="center">attached</td>
+<td align="center">Function</td>
+<td align="center">否</td>
+<td align="center">生命周期函数</td>
+</tr>
+<tr>
+<td align="center">ready</td>
+<td align="center">Function</td>
+<td align="center">否</td>
+<td align="center">生命周期函数</td>
+</tr>
+<tr>
+<td align="center">moved</td>
+<td align="center">Function</td>
+<td align="center">否</td>
+<td align="center">生命周期函数</td>
+</tr>
+<tr>
+<td align="center">detached</td>
+<td align="center">Function</td>
+<td align="center">否</td>
+<td align="center">生命周期函数</td>
+</tr>
+</tbody></table>
+<p>*<em>同名字段的覆盖和组合规则**</em></p>
+<p>组件和它引用的 behavior 中<strong>可以包含同名的字段</strong>，此时可以参考如下3种同名时的处理规则:</p>
+<ol>
+<li>同名的数据字段 (<strong>data</strong>)</li>
+<li>同名的属性 (<strong>properties</strong>) 或方法 (<strong>methods</strong>)</li>
+<li>同名的<strong>生命周期函数</strong></li>
+</ol>
+<p>关于详细的覆盖和组合规则，大家可以参考微信小程序官方文档给出的说明:</p>
+<p><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/behaviors.html">https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/behaviors.html</a></p>
+<h4 id="组件的总结"><a href="#组件的总结" class="headerlink" title="组件的总结"></a>组件的总结</h4><ol>
+<li>创建并引用组件<ul>
+<li><strong>全局引用</strong>、局部引用、<strong>usingComponents</strong></li>
+</ul>
+</li>
+<li>如何修改组件的样式隔离选项<ul>
+<li>options -&gt; <strong>stylelsolation</strong> ( isolated , apply-shared, shared )</li>
+</ul>
+</li>
+<li>定义和使用数据监听器<ul>
+<li><strong>observers</strong></li>
+</ul>
+</li>
+<li>定义和使用纯数据字段<ul>
+<li>options -&gt; <strong>pureDataPattern</strong></li>
+</ul>
+</li>
+<li>实现组件父子通信的3种方式<ul>
+<li>属性绑定、<strong>事件绑定</strong>、this.selectComponent(‘ id或class选择器’)</li>
+</ul>
+</li>
+<li>定义和使用behaviors<ul>
+<li>调用 <strong>Behavior()</strong> 构造器方法</li>
+</ul>
+</li>
+</ol>
+<h3 id="使用-npm-包"><a href="#使用-npm-包" class="headerlink" title="使用 npm 包"></a>使用 npm 包</h3><h4 id="小程序对-npm-的支持与限制"><a href="#小程序对-npm-的支持与限制" class="headerlink" title="小程序对 npm 的支持与限制"></a>小程序对 npm 的支持与限制</h4><p>目前，小程序中已经支持使用 npm 安装第三方包，从而来提高小程序的开发效率。但是，在小程序中使用 npm 包有如下3个限制:</p>
+<ol>
+<li>不支持依赖于 <strong>Node.js 内置库</strong>的包</li>
+<li>不支持依赖于<strong>浏览器内置对象</strong>的包</li>
+<li>不支持依赖于 <strong>C++ 插件</strong>的包</li>
+</ol>
+<p>总结：虽然 npm 上的包有千千万，但是能供小程序使用的包却 “为数不多”。</p>
+<h4 id="Vant-Weapp"><a href="#Vant-Weapp" class="headerlink" title="Vant Weapp"></a>Vant Weapp</h4><p>Vant Weapp是有赞前端团队开源的一套小程序U组件库，助力开发者快速搭建小程序应用。它所使用的是MIT开源许可协议，对商业使用比较友好。</p>
+<p>官方文档地址 <a target="_blank" rel="noopener" href="https://youzan.github.io/vant-weapp">https://youzan.github.io/vant-weapp</a></p>
+<p><strong>安装Vant组件库</strong></p>
+<p>在小程序项目中，安装 Vant 组件库主要分为如下3步:</p>
+<ol>
+<li>通过 npm 安装（建议指定版本为**@1.3.3**)</li>
+<li>构建 npm 包</li>
+<li>修改 app.json</li>
+</ol>
+<p>详细的操作步骤，大家可以参考Vant官方提供的快速上手教程:</p>
+<p><a target="_blank" rel="noopener" href="https://youzan.github.io/vant-weapp/#/quickstart#tan-zhuang">https://youzan.github.io/vant-weapp/#/quickstart#tan-zhuang</a></p>
+<p><strong>安装步骤</strong></p>
+<p>打开项目根目录的终端</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm init -y <span class="comment">// 初始化包管理器</span></span><br><span class="line">npm i @vant/weapp@<span class="number">1.3</span><span class="number">.3</span> -S --production <span class="comment">// 安装指定版本的vant</span></span><br></pre></td></tr></table></figure>
+
+<p>在微信开发者工具中</p>
+<ul>
+<li>工具菜单栏 -&gt; 构建npm</li>
+<li>右上角详情 -&gt; 本地设置 -&gt; 勾选使用npm模块 （新版好像没有这个选项）</li>
+<li>将 app.json 中的 “style”: “v2” 去除，小程序的新版基础组件强行加上了许多样式，难以覆盖，不关闭将造成部分组件样式混乱。</li>
+</ul>
+<p><strong>使用Vant组件</strong></p>
+<p>安装完 Vant 组件库之后，可以在 <strong>app.json</strong> 或 <strong>页面.json</strong> 的 <strong>usingComponents</strong> 节点中引入需要的组件，即可在 wxml 中直接使用组件。示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.json</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//.....</span></span><br><span class="line">  <span class="string">&quot;usingComponents&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;van-button&quot;</span>: <span class="string">&quot;@vant/weapp/button/index&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--pages/home/home.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;default&quot;</span>&gt;</span>默认按钮<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span>&gt;</span>主要按钮<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;info&quot;</span>&gt;</span>信息按钮<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;warning&quot;</span>&gt;</span>警告按钮<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;danger&quot;</span>&gt;</span>危险按钮<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>定制全局主题样式</strong></p>
+<p>Vant weapp 使用 <strong>CSS变量</strong> 来实现定制主题。关于 CSS 变量的基本用法，请参考 MDN 文档:</p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CsS/using_css_custom_properties">https://developer.mozilla.org/zh-CN/docs/Web/CsS/using_css_custom_properties</a></p>
+<p>在 <strong>app.wxss</strong> 中，写入CSS变量，即可对全局生效:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**app.wxss**/</span></span><br><span class="line">page &#123;</span><br><span class="line">    <span class="attr">--button-danger-background-color</span>:<span class="number">#C00000</span>;</span><br><span class="line">    <span class="attr">--button-danger-border-color</span>:<span class="number">#D60000</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>vant 样式变量参考：<a target="_blank" rel="noopener" href="https://youzan.github.io/vant-weapp/#/theme">https://youzan.github.io/vant-weapp/#/theme</a></p>
+<h4 id="API-Promise化"><a href="#API-Promise化" class="headerlink" title="API Promise化"></a>API Promise化</h4><p>默认情况下，小程序官方提供的<strong>异步 API</strong> 都是<strong>基于回调函数</strong>实现的，例如，网络请求的 API 需要按照如下的方式调用:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wx.<span class="title function_">request</span>(&#123;</span><br><span class="line">    <span class="attr">method</span>:<span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    <span class="attr">url</span>:<span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    <span class="attr">data</span>:&#123;&#125;,</span><br><span class="line">    <span class="attr">success</span>:<span class="function">() =&gt;</span> &#123;&#125;, <span class="comment">// 请求成功的回调函数</span></span><br><span class="line">    <span class="attr">fail</span>:<span class="function">() =&gt;</span> &#123;&#125;, <span class="comment">// 请求失败的回调函数</span></span><br><span class="line">    <span class="attr">complete</span>:<span class="function">() =&gt;</span> &#123;&#125; <span class="comment">// 请求完成的回调函数</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>缺点:容易造成<strong>回调地狱</strong>的问题，代码的<strong>可读性</strong>、<strong>维护性</strong>差!</p>
+<p><strong>APl Promise化</strong>，指的是<strong>通过额外的配置</strong>，将官方提供的、基于回调函数的异步 API，<strong>升级改造为基于 Promise 的异步API</strong>，从而提高代码的可读性、维护性，避免回调地狱的问题。</p>
+<p>在小程序中，实现 APl Promise 化主要依赖于 <strong>miniprogram-api-promise</strong> 这个第三方的 npm 包。它的安装和使用步骤如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save miniprogram-api-promise@<span class="number">1.0</span><span class="number">.4</span> <span class="comment">// 安装 miniprogram-api-promise</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：相关的包安装完毕之后，记得<strong>删除 miniprogram_npm 目录</strong>后，重新<strong>构建 npm</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在小程序入口文件中(app.js)，只需调用一次 promisifyAl1()方法，</span></span><br><span class="line"><span class="comment">// 即可实现异步 API的 Promise 化</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; promisifyAll &#125; <span class="keyword">from</span> <span class="string">&#x27;miniprogram-api-promise&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> wxp = wx.<span class="property">p</span> = &#123;&#125;</span><br><span class="line"><span class="comment">// promisify all xs`s api</span></span><br><span class="line"><span class="title function_">promisifyAll</span>(wx,wxp)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>调用 Promise化之后的异步 API</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pages/home/home.js</span></span><br><span class="line"><span class="title class_">Page</span>(&#123;</span><br><span class="line">    <span class="keyword">async</span> getInfo () &#123;</span><br><span class="line">       <span class="keyword">const</span> &#123;<span class="attr">data</span>:res&#125; = <span class="keyword">await</span> wx.<span class="property">p</span>.<span class="title function_">request</span>(&#123;</span><br><span class="line">            <span class="attr">method</span>:<span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">            <span class="attr">url</span>:<span class="string">&#x27;https://www.escook.cn/api/get&#x27;</span>,</span><br><span class="line">            <span class="attr">data</span>:&#123;</span><br><span class="line">                <span class="attr">name</span>:<span class="string">&#x27;zs&#x27;</span>,</span><br><span class="line">                <span class="attr">age</span>:<span class="number">20</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(res);</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> <span class="attr">bindtap</span>=<span class="string">&quot;getInfo&quot;</span>&gt;</span>主要按钮<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="全局数据共享"><a href="#全局数据共享" class="headerlink" title="全局数据共享"></a>全局数据共享</h3><p><strong>全局数据共享</strong>（又叫做:状态管理）是为了解决<strong>组件之间数据共享</strong>的问题。开发中常用的全局数据共享方案有: Vuex、Redux、MobX等。</p>
+<p>在小程序中，可使用 <strong>mobx-miniprogram</strong> 配合 <strong>mobx-miniprogram-bindings</strong> 实现全局数据共享。其中:</p>
+<ul>
+<li>mobx-miniprogram 用来<strong>创建 Store 实例对象</strong></li>
+<li>mobx-miniprogram-bindings 用来<strong>把 Store 中的共享数据或方法</strong>，<strong>绑定到组件或页面中使用</strong></li>
+</ul>
+<p><strong>安装 MobX 相关的包</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save mobx-miniprogram@<span class="number">4.13</span><span class="number">.2</span> mobx-miniprogram-bindings@<span class="number">1.2</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：MobX 相关的包安装完毕之后，记得<strong>删除 miniprogram_npm 目录</strong>后，重新<strong>构建 npm</strong>。</p>
+<p><strong>创建 MobX 的 Store 实例</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在这个JS文件中，专门来创建 Store 的实例对象</span></span><br><span class="line"><span class="keyword">import</span> &#123; observable,action &#125; <span class="keyword">from</span> <span class="string">&#x27;mobx-miniprogram&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> store = <span class="title function_">observable</span>(&#123;</span><br><span class="line">    <span class="comment">// 数据字段</span></span><br><span class="line">    <span class="attr">numA</span>:<span class="number">1</span>,</span><br><span class="line">    <span class="attr">numB</span>:<span class="number">2</span>,</span><br><span class="line">    <span class="comment">// 计算属性</span></span><br><span class="line">    <span class="keyword">get</span> <span class="title function_">sum</span>() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">numA</span> + <span class="variable language_">this</span>.<span class="property">numB</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// actions 方法，专门用来修改 store 中的数据</span></span><br><span class="line">    <span class="attr">updateNum1</span>:<span class="title function_">action</span>(<span class="keyword">function</span>(<span class="params">step</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">numA</span> += step</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="attr">updateNum2</span>:<span class="title function_">action</span>(<span class="keyword">function</span>(<span class="params">step</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">numB</span> += step</span><br><span class="line">    &#125;),</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>将 Store 中的成员绑定到页面中</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pages/messsage/messsage.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; createStoreBindings &#125; <span class="keyword">from</span> <span class="string">&#x27;mobx-miniprogram-bindings&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; store &#125; <span class="keyword">from</span> <span class="string">&#x27;../../store/store&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Page</span>(&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生命周期函数--监听页面加载</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="title function_">onLoad</span>(<span class="params">options</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">storeBindings</span> = <span class="title function_">createStoreBindings</span>(<span class="variable language_">this</span>,&#123; </span><br><span class="line">            store, <span class="comment">// 数据源</span></span><br><span class="line">            <span class="attr">fields</span>:[<span class="string">&#x27;numA&#x27;</span>,<span class="string">&#x27;numB&#x27;</span>,<span class="string">&#x27;sum&#x27;</span>],</span><br><span class="line">            <span class="attr">actions</span>:[<span class="string">&#x27;updateNum1&#x27;</span>]</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生命周期函数--监听页面卸载</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="title function_">onUnload</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">storeBindings</span>.<span class="title function_">destroyStoreBindings</span>()</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>在页面上使用 Store 中的成员</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Page</span>(&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="title function_">btnHandler1</span>(<span class="params">e</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">updateNum1</span>(e.<span class="property">target</span>.<span class="property">dataset</span>.<span class="property">step</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">)&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--pages/messsage/messsage.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    &#123;&#123;numA&#125;&#125; + &#123;&#123;numB&#125;&#125; = &#123;&#123;sum&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> <span class="attr">bindtap</span>=<span class="string">&quot;btnHandler1&quot;</span> <span class="attr">data-step</span>=<span class="string">&quot;&#123;&#123;1&#125;&#125;&quot;</span>&gt;</span>numA + 1<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;danger&quot;</span> <span class="attr">bindtap</span>=<span class="string">&quot;btnHandler1&quot;</span> <span class="attr">data-step</span>=<span class="string">&quot;&#123;&#123;-1&#125;&#125;&quot;</span>&gt;</span>numA - 1<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>将 Store 中的成员绑定到组件中</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/numbers/numbers.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; storeBindingsBehavior &#125; <span class="keyword">from</span> <span class="string">&#x27;mobx-miniprogram-bindings&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; store &#125; <span class="keyword">from</span> <span class="string">&#x27;../../store/store&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">    <span class="attr">behaviors</span>:[storeBindingsBehavior],</span><br><span class="line"></span><br><span class="line">    <span class="attr">storeBindings</span>:&#123;</span><br><span class="line">        store, <span class="comment">// 指定要绑定的 Store</span></span><br><span class="line">        <span class="attr">fields</span>:&#123; <span class="comment">// 指定要绑定的字段数据</span></span><br><span class="line">            <span class="attr">numA</span>: <span class="function">() =&gt;</span> store.<span class="property">numA</span>, <span class="comment">// 绑定字段的第 1 种方式</span></span><br><span class="line">            <span class="attr">numB</span>: <span class="function">(<span class="params">store</span>) =&gt;</span> store.<span class="property">numB</span>, <span class="comment">// 绑定字段的第 2 种方式</span></span><br><span class="line">            <span class="attr">sum</span>:<span class="string">&#x27;sum&#x27;</span> <span class="comment">// 绑定字段的第 3 种方式</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">actions</span>:&#123; <span class="comment">// 指定要绑定的方法</span></span><br><span class="line">            <span class="attr">updateNum2</span>:<span class="string">&#x27;updateNum2&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">)&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>在组件中使用 Store 中的成员</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// components/numbers/numbers.js</span></span><br><span class="line"><span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 组件的方法列表</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="attr">methods</span>: &#123;</span><br><span class="line">        <span class="title function_">btnHandler2</span>(<span class="params">e</span>)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">updateNum2</span>(e.<span class="property">target</span>.<span class="property">dataset</span>.<span class="property">step</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--components/numbers/numbers.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    &#123;&#123;numA&#125;&#125; + &#123;&#123;numB&#125;&#125; = &#123;&#123;sum&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> <span class="attr">bindtap</span>=<span class="string">&quot;btnHandler2&quot;</span> <span class="attr">data-step</span>=<span class="string">&quot;&#123;&#123;1&#125;&#125;&quot;</span>&gt;</span>numB + 1<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">van-button</span> <span class="attr">type</span>=<span class="string">&quot;danger&quot;</span> <span class="attr">bindtap</span>=<span class="string">&quot;btnHandler2&quot;</span> <span class="attr">data-step</span>=<span class="string">&quot;&#123;&#123;-1&#125;&#125;&quot;</span>&gt;</span>numB - 1<span class="tag">&lt;/<span class="name">van-button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h3 id="分包"><a href="#分包" class="headerlink" title="分包"></a>分包</h3><p>分包指的是把一个<strong>完整的小程序项目</strong>，按照需求<strong>划分为不同的子包</strong>，在构建时打包成不同的分包，用户在使用时<strong>按需进行加载</strong>。</p>
+<p>对小程序进行分包的好处主要有以下两点:</p>
+<ul>
+<li>可以<strong>优化小程序首次启动的下载时间</strong></li>
+<li>在<strong>多团队共同开发</strong>时可以更好的<strong>解耦协作</strong></li>
+</ul>
+<h4 id="分包的加载规则"><a href="#分包的加载规则" class="headerlink" title="分包的加载规则"></a>分包的加载规则</h4><ol>
+<li>在小程序启动时，默认会<strong>下载主包</strong>并<strong>启动主包内页面</strong><ul>
+<li>tabBar 页面需要放到主包中</li>
+</ul>
+</li>
+<li>当用户进入分包内某个页面时，<strong>客户端会把对应分包下载下来</strong>，下载完成后再进行展示<ul>
+<li>非 tabBar 页面可以按照功能的不同，划分为不同的分包之后，进行按需下载</li>
+</ul>
+</li>
+</ol>
+<h4 id="分包的体积限制"><a href="#分包的体积限制" class="headerlink" title="分包的体积限制"></a>分包的体积限制</h4><p>目前，小程序分包的大小有以下两个限制:</p>
+<ul>
+<li>整个小程序所有分包大小不超过16M（主包＋所有分包)</li>
+<li>单个分包/主包大小不能超过2M</li>
+</ul>
+<h4 id="配置分包"><a href="#配置分包" class="headerlink" title="配置分包"></a>配置分包</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;pages&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span> <span class="comment">// 主包的所有页面</span></span><br><span class="line">    <span class="string">&quot;pages/home/home&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;pages/messsage/messsage&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;pages/contact/contact&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;subPackages&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="comment">// 通过subPackages节点，声明分包的结构</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;root&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pkgA&quot;</span><span class="punctuation">,</span> <span class="comment">// 第一个分包的根目录</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;p1&quot;</span><span class="punctuation">,</span> <span class="comment">// 分包的别名</span></span><br><span class="line">        <span class="attr">&quot;pages&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="comment">// 当前分包下，所有页面的相对存放路径</span></span><br><span class="line">            <span class="string">&quot;pages/cat/cat&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;pages/dog/dog&quot;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;root&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pkgB&quot;</span><span class="punctuation">,</span> <span class="comment">// 第二个分包的根目录</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;p2&quot;</span><span class="punctuation">,</span> <span class="comment">// 分包的别名</span></span><br><span class="line">        <span class="attr">&quot;pages&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="comment">// 当前分包下，所有页面的相对存放路径</span></span><br><span class="line">            <span class="string">&quot;pages/apple/apple&quot;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 右上角详情 -&gt; 基本信息 -&gt; 本地代码  ，可以查看到分包的大小</p>
+<h4 id="打包原则"><a href="#打包原则" class="headerlink" title="打包原则"></a>打包原则</h4><ol>
+<li>小程序会按 <strong>subpackages</strong> 的配置进行分包，subpackages 之外的目录将被打包到主包中</li>
+<li>主包也可以有自己的 pages (即最外层的 pages 字段)</li>
+<li>tabBar 页面必须在主包内</li>
+<li>分包之间不能互相嵌套</li>
+</ol>
+<h4 id="引用原则"><a href="#引用原则" class="headerlink" title="引用原则"></a>引用原则</h4><ol>
+<li>主包<strong>无法引用</strong>分包内的私有资源</li>
+<li>分包之间<strong>不能相互引用</strong>私有资源</li>
+<li>分包<strong>可以引用</strong>主包内的公共资源</li>
+</ol>
+<h4 id="独立分包"><a href="#独立分包" class="headerlink" title="独立分包"></a>独立分包</h4><p>独立分包<strong>本质上也是分包</strong>，只不过它比较特殊，<strong>可以独立于主包和其他分包而单独运行</strong>。</p>
+<p><strong>独立分包和普通分包的区别</strong></p>
+<p>最主要的区别：<strong>是否依赖于主包才能运行</strong></p>
+<ul>
+<li>普通分包必须依赖于主包才能运行</li>
+<li>独立分包可以在不下载主包的情况下，独立运行</li>
+</ul>
+<p><strong>独立分包的应用场景</strong></p>
+<p>开发者可以按需，将某些<strong>具有一定功能独立性的页面</strong>配置到<strong>独立分包</strong>中。原因如下：</p>
+<ul>
+<li>当小程序从普通的分包页面启动时，需要首先下载主包</li>
+<li>而独立分包<strong>不依赖主包</strong>即可运行，<strong>可以很大程度上提升分包页面的启动速度</strong></li>
+</ul>
+<p>注意：一个小程序中可以有多个独立分包。</p>
+<p><strong>独立分包的配置方法</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;subPackages&quot;</span>: [</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="string">&quot;root&quot;</span>: <span class="string">&quot;pkgA&quot;</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;p1&quot;</span>,</span><br><span class="line">      <span class="string">&quot;pages&quot;</span>: [</span><br><span class="line">          <span class="string">&quot;pages/cat/cat&quot;</span>,</span><br><span class="line">          <span class="string">&quot;pages/dog/dog&quot;</span></span><br><span class="line">      ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="string">&quot;root&quot;</span>: <span class="string">&quot;pkgB&quot;</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;p2&quot;</span>,</span><br><span class="line">      <span class="string">&quot;pages&quot;</span>: [</span><br><span class="line">          <span class="string">&quot;pages/apple/apple&quot;</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="string">&quot;independent&quot;</span>: <span class="literal">true</span> <span class="comment">// 通过此节点，声明当前 pkgB 分包为“独立分包”</span></span><br><span class="line">  &#125;</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>独立分包的引用原则</strong></p>
+<p>独立分包和普通分包以及主包之间，是<strong>相互隔绝</strong>的，<strong>不能相互引用彼此的资源</strong>！例如：</p>
+<ol>
+<li>主包<strong>无法引用</strong>独立分包内的私有资源</li>
+<li>独立分包之间，<strong>不能相互引用</strong>私有资源</li>
+<li>独立分包和普通分包之间，<strong>不能相互引用</strong>私有资源</li>
+<li><strong>特别注意：</strong>独立分包中不能引用主包内的公共资源</li>
+</ol>
+<h4 id="分包预下载"><a href="#分包预下载" class="headerlink" title="分包预下载"></a>分包预下载</h4><p>分包预下载指的是：在进入小程序的某个页面时，<strong>由框架自动预下载可能需要的分包</strong>，从而提升进入后续分包页面时的启动速度。</p>
+<p><strong>配置分包的预下载</strong></p>
+<p><strong>预下载分包的行为，会在进入指定的页面时触发</strong>。在 app.json中，使用 <strong>preloadRule</strong> 节点定义分包的预下载规则，示例代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;pages&quot;</span>:[</span><br><span class="line">    <span class="string">&quot;pages/home/home&quot;</span>,</span><br><span class="line">    <span class="string">&quot;pages/messsage/messsage&quot;</span>,</span><br><span class="line">    <span class="string">&quot;pages/contact/contact&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;preloadRule&quot;</span>: &#123; <span class="comment">// 分包预下载的规则</span></span><br><span class="line">      <span class="string">&quot;pages/contact/contact&quot;</span>:&#123; <span class="comment">// 触发分包预下载的页面路径</span></span><br><span class="line">          <span class="comment">// packages 表示进入页面后，预下载哪些分包 </span></span><br><span class="line">          <span class="comment">// 可以通过root或name指定预下载哪些分包</span></span><br><span class="line">          <span class="string">&quot;packages&quot;</span>: [<span class="string">&quot;p1&quot;</span>],</span><br><span class="line">          <span class="comment">// network表示在指定的网络模式下进行预下载， </span></span><br><span class="line">          <span class="comment">// 可选值为: all（不限网络）和 wifi（仅 wifi模式下进行预下载) </span></span><br><span class="line">          <span class="comment">// 默认值为: wifi</span></span><br><span class="line">          <span class="string">&quot;network&quot;</span>: <span class="string">&quot;all&quot;</span> </span><br><span class="line">      &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// ....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>分包预下载的限制</strong></p>
+<p>同一个分包中的页面享有<strong>共同的预下载大小限额 2M</strong></p>
+<h3 id="案例-自定义-tabBar-案例-自定义-tabBar-md"><a href="#案例-自定义-tabBar-案例-自定义-tabBar-md" class="headerlink" title="[案例  -  自定义 tabBar](./案例  -  自定义 tabBar.md)"></a>[案例  -  自定义 tabBar](./案例  -  自定义 tabBar.md)</h3><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>能够知道如何安装和配置vant-weapp 组件库<ul>
+<li>参考Vant的官方文档</li>
+</ul>
+</li>
+<li>能够知道如何使用MobX实现全局数据共享<ul>
+<li>安装包、创建Store、参考官方文档进行使用</li>
+</ul>
+</li>
+<li>能够知道如何对小程序的API进行Promise 化<ul>
+<li>安装包、在app.js 中进行配置</li>
+</ul>
+</li>
+<li>能够知道如何实现自定义tabBar的效果<ul>
+<li>Vant组件库＋自定义组件＋全局数据共享</li>
+</ul>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">erha</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA/">http://example.com/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">erha blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a></div><div class="post_share"><div class="social-share" data-image="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F-uniapp/" title="微信小程序-uniapp"><img class="cover" src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">微信小程序-uniapp</div></div></a></div><div class="next-post pull-right"><a href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%A7%86%E5%9B%BE%E4%B8%8E%E9%80%BB%E8%BE%91/" title="微信小程序的视图与逻辑"><img class="cover" src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">微信小程序的视图与逻辑</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F-uniapp/" title="微信小程序-uniapp"><img class="cover" src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-07</div><div class="title">微信小程序-uniapp</div></div></a></div><div><a href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%A7%86%E5%9B%BE%E4%B8%8E%E9%80%BB%E8%BE%91/" title="微信小程序的视图与逻辑"><img class="cover" src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-07</div><div class="title">微信小程序的视图与逻辑</div></div></a></div><div><a href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%A8%A1%E6%9D%BF%E4%B8%8E%E9%85%8D%E7%BD%AE/" title="微信小程序的模板与配置"><img class="cover" src="https://pic.imgdb.cn/item/63e0e35a4757feff336ee739.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-07</div><div class="title">微信小程序的模板与配置</div></div></a></div><div><a href="/2022/02/04/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" title="微信小程序"><img class="cover" src="https://pic.imgdb.cn/item/63e0e35a4757feff336ee739.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-04</div><div class="title">微信小程序</div></div></a></div><div><a href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%B5%B7%E6%AD%A5/" title="微信小程序的起步"><img class="cover" src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-07</div><div class="title">微信小程序的起步</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://pic.imgdb.cn/item/63e0f1d14757feff33865eb7.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">erha</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/erha2777"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/erha2777" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2777840869@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6"><span class="toc-text">自定义组件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E5%BC%95%E7%94%A8"><span class="toc-text">组件的创建与引用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E5%92%8C%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">组件和页面的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E9%9A%94%E7%A6%BB"><span class="toc-text">组件样式隔离</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-text">组件的数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">组件的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-text">组件的属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-text">数据监听器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC%E5%99%A8-%E6%A1%88%E4%BE%8B"><span class="toc-text">数据监听器-案例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%AF%E6%95%B0%E6%8D%AE%E5%AD%97%E6%AE%B5"><span class="toc-text">纯数据字段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">组件的生命周期</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E6%8F%92%E6%A7%BD"><span class="toc-text">组件的插槽</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-text">父子组件之间的通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#behaviors"><span class="toc-text">behaviors</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E6%80%BB%E7%BB%93"><span class="toc-text">组件的总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-npm-%E5%8C%85"><span class="toc-text">使用 npm 包</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%AF%B9-npm-%E7%9A%84%E6%94%AF%E6%8C%81%E4%B8%8E%E9%99%90%E5%88%B6"><span class="toc-text">小程序对 npm 的支持与限制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vant-Weapp"><span class="toc-text">Vant Weapp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#API-Promise%E5%8C%96"><span class="toc-text">API Promise化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE%E5%85%B1%E4%BA%AB"><span class="toc-text">全局数据共享</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%8C%85"><span class="toc-text">分包</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%8C%85%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%A7%84%E5%88%99"><span class="toc-text">分包的加载规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%8C%85%E7%9A%84%E4%BD%93%E7%A7%AF%E9%99%90%E5%88%B6"><span class="toc-text">分包的体积限制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%88%86%E5%8C%85"><span class="toc-text">配置分包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E5%8E%9F%E5%88%99"><span class="toc-text">打包原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E5%8E%9F%E5%88%99"><span class="toc-text">引用原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E5%88%86%E5%8C%85"><span class="toc-text">独立分包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%8C%85%E9%A2%84%E4%B8%8B%E8%BD%BD"><span class="toc-text">分包预下载</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-%E8%87%AA%E5%AE%9A%E4%B9%89-tabBar-%E6%A1%88%E4%BE%8B-%E8%87%AA%E5%AE%9A%E4%B9%89-tabBar-md"><span class="toc-text">[案例  -  自定义 tabBar](.&#x2F;案例  -  自定义 tabBar.md)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F-uniapp/" title="微信小程序-uniapp"><img src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微信小程序-uniapp"/></a><div class="content"><a class="title" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F-uniapp/" title="微信小程序-uniapp">微信小程序-uniapp</a><time datetime="2023-02-07T06:26:55.095Z" title="发表于 2023-02-07 14:26:55">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA/" title="微信小程序的基础加强"><img src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微信小程序的基础加强"/></a><div class="content"><a class="title" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA/" title="微信小程序的基础加强">微信小程序的基础加强</a><time datetime="2023-02-07T06:19:54.682Z" title="发表于 2023-02-07 14:19:54">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%A7%86%E5%9B%BE%E4%B8%8E%E9%80%BB%E8%BE%91/" title="微信小程序的视图与逻辑"><img src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微信小程序的视图与逻辑"/></a><div class="content"><a class="title" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%A7%86%E5%9B%BE%E4%B8%8E%E9%80%BB%E8%BE%91/" title="微信小程序的视图与逻辑">微信小程序的视图与逻辑</a><time datetime="2023-02-07T06:18:37.530Z" title="发表于 2023-02-07 14:18:37">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%A8%A1%E6%9D%BF%E4%B8%8E%E9%85%8D%E7%BD%AE/" title="微信小程序的模板与配置"><img src="https://pic.imgdb.cn/item/63e0e35a4757feff336ee739.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微信小程序的模板与配置"/></a><div class="content"><a class="title" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%A8%A1%E6%9D%BF%E4%B8%8E%E9%85%8D%E7%BD%AE/" title="微信小程序的模板与配置">微信小程序的模板与配置</a><time datetime="2023-02-07T06:16:29.391Z" title="发表于 2023-02-07 14:16:29">2023-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%B5%B7%E6%AD%A5/" title="微信小程序的起步"><img src="https://pic.imgdb.cn/item/63dfbedd4757feff33d34240.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微信小程序的起步"/></a><div class="content"><a class="title" href="/2023/02/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%B5%B7%E6%AD%A5/" title="微信小程序的起步">微信小程序的起步</a><time datetime="2023-02-07T06:13:53.713Z" title="发表于 2023-02-07 14:13:53">2023-02-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By erha</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://erha2777.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
